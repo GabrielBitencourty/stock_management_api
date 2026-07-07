@@ -1,0 +1,24 @@
+const express = require('express');
+const app = express();
+const port = 8080
+const date = new Date().toLocaleString("pt-BR");
+require("dotenv").config();
+
+const databaseConnection = require('./src/data/mongodb.js')
+const users = require('./src/users/userRoutes.js')
+
+app.use(express.json());
+app.use('/users', users);
+databaseConnection()
+
+app.get('/', (req, res) => {
+    res.status(200).json({
+        requestTime: date,
+        status: 'Success: API is running!',
+        version: '1.0.0',  
+    })
+})
+
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+})
