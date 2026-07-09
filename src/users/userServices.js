@@ -1,85 +1,71 @@
 const usersData = require('../data/users.json')
 const userRepository = require('./userRepository.js')
-const date = new Date().toLocaleString("pt-BR")
+const user = require('../model/User.js');
+const dateTime = require('../utils/datetimeFormat.js')
+const passwordEncryption = require('../utils/passwordEncryption.js');
+const { default: mongoose } = require('mongoose');
 
-function getAllUsers () {
+async function getAllUsers() {
     try {
         return {
-            requestTime: date,
+            requestTime: dateTime.getCurrentDateTime(),
             status: 'Success: API is running',
             version: '1.0.0',
-            Users: userRepository.getAllUsers()  
+            Users: await userRepository.getAllUsers()
         };
     } catch (error) {
-        throw new Error(error.message)
+        throw new Error(error.message);
     }
 }
 
-function getUserById (userId) {
-    const id = Number(userId);
+async function createNewUser(body) {
     try {
-        const user = usersData.find(user => user.userId === id);
-        if (!user) {
-            return {
-                requestTime: date,
-                status: 'Error: User not found',
-                version: '1.0.0',
-                userData: null
-            };
-        }
-        return {
-            requestTime: date,
-            status: 'Success: User found',
-            version: '1.0.0',
-            userData: user
-        };
-    } catch (error) {
-        throw new Error(error.message)
-    }
-}
+        const userName = body.userName
+        const userEmail = body.email
+        const userPassword = body.password
 
-function getTokenForUser(email) {
-    try {
-        const user = usersData.find(un => un.email === email)
-        const userStatus = user.state
-        if (!user) {
+        const newPassword = await passwordEncryption(userPassword)
+
+        const dbUser = await user.findOne({
+            $or: [
+                { userName: userName },
+                { email: userEmail }
+            ]
+        })
+
+        if (dbUser) {
             return {
-                requestTime: date,
-                status: 'Error: User not found, unable to get the access token',
-                version: '1.0.0',
-                userData: null
-            };
-        } else if (userStatus == "deactivated") {
-            return {
-                requestTime: date,
-                status: 'Unable to get the access token, the user is deactivated',
-                version: '1.0.0',
-                userState: userStatus
+                message: "User already exist!",
+                version: "1.0.0",
+                requestTime: dateTime.getCurrentDateTime(),
+                statusCode: 409,
             }
         }
-        return {
-            requestTime: date,
-            status: "Success",
-            token: generateToken(email)
+
+        const payload = {
+            _id: new mongoose.Types.ObjectId(),
+            userName: userName,
+            email: userEmail,
+            password: newPassword,
+            state: "active",
+            userAccess: "user"
         }
+
+        const createdUser = await userRepository.createNewUser(payload)
+
+        return {
+            requestTime: dateTime.getCurrentDateTime(),
+            status: "User created successfully!",
+            version: "1.0.0",
+            data: createdUser
+        }
+
     } catch (error) {
         throw new Error(error.message)
     }
-}
-
-function generateToken(email) {
-    if (!email) {
-        return error;
-        console.log(`Unable to generate the token user is not defined: user: ${email}`)
-    }
-    return {
-        token: "Aqui vai o token......"
-    }
-
 }
 
 module.exports = {
     getAllUsers,
-    getUserById,
-    getTokenForUser
+    createNewUser
 }

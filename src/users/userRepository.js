@@ -1,8 +1,16 @@
+const user = require('../model/User.js');
 
-function getAllUsers() {
-    
+async function getAllUsers() {
+    const users = await user.find({});
+    return users;
+}
+ 
+async function createNewUser(payload) {
+    const newUser = await user.create(payload)
+    return newUser
 }
 
-export default {
-    getAllUsers
-}
+module.exports = {
+    getAllUsers,
+    createNewUser
+};

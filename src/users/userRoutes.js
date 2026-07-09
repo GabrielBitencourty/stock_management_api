@@ -6,4 +6,6 @@ user.get('/', userController.getAllUsers)
 user.get('/:userId', userController.getUserById)
 user.get('/:email/gettoken', userController.getTokenForUser)
 
+user.post('/', userController.createNewUser)
+
 module.exports = user
