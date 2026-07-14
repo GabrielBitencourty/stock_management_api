@@ -10,7 +10,27 @@ async function createNewUser(payload) {
     return newUser
 }
 
+async function getUserByEmail(userid) {
+    const uniqueUser = await user.findOne({
+        email: userid
+    })
+
+    if (!uniqueUser){
+        return null
+    }
+
+    const userObj = {
+        userEmail: uniqueUser.email,
+        userName: uniqueUser.userName ,
+        userAccess: uniqueUser.userAccess,
+        userState: uniqueUser.state
+
+    }
+    return userObj
+}
+
 module.exports = {
     getAllUsers,
+    getUserByEmail,
     createNewUser
 };

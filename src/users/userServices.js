@@ -1,4 +1,3 @@
-const usersData = require('../data/users.json')
 const userRepository = require('./userRepository.js')
 const user = require('../model/User.js');
 const dateTime = require('../utils/datetimeFormat.js')
@@ -14,7 +13,34 @@ async function getAllUsers() {
             Users: await userRepository.getAllUsers()
         };
     } catch (error) {
-        throw new Error(error.message);
+        throw new Error(error.message)
+        console.log("Error Message: ",  error.message)
+    }
+}
+
+async function getUserByEmail(userEmail){
+    try {
+        const userId = userEmail
+        const userData = await userRepository.getUserByEmail(userId)
+
+        if (!userId || !userData) {
+            return {
+                requestTime: dateTime.getCurrentDateTime(),
+                status: 'User not found in our Database!',
+                statusCode: 404,
+                version: '1.0.0',
+            }
+        }
+
+        return {
+            requestTime: dateTime.getCurrentDateTime(),
+            status: 'Success: user founded!',
+            version: '1.0.0',
+            userData 
+        }    
+    } catch (error) {
+        throw new Error(error.message)
+        console.log("Error Message: ",  error.message)
     }
 }
 
@@ -62,10 +88,12 @@ async function createNewUser(body) {
 
     } catch (error) {
         throw new Error(error.message)
+        console.log("Error Message: ", error.message)
     }
 }
 
 module.exports = {
     getAllUsers,
+    getUserByEmail,
     createNewUser
 }

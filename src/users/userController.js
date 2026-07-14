@@ -7,13 +7,23 @@ async function getAllUsers(req, res) {
     res.status(200).json(users);
 }
 
-function getUserById(req, res) {
-    const { userId } = req.params;
-    const user = userService.getUserById(userId)
-    res.status(200).json(user)
+async function getUserByEmail(req, res) {
+    const { userEmail } = req.params;
+
+    if (!userEmail) {
+        return res.status(400).json({
+            message: "Bad request, missing required fields!",
+            requestTime: dateTime.getCurrentDateTime(),
+            httpCode: 400,
+            version: "0.0.1",
+        })
+    }
+
+    const userByIdResult = await userService.getUserByEmail(userEmail)
+    res.status(userByIdResult.statusCode || 200).json(userByIdResult)
 }
 
-function getTokenForUser(req, res) {
+async function getTokenForUser(req, res) {
     const { email } = req.params;
     const token = userService.getTokenForUser(email)
     res.status(200).json(token)
@@ -39,7 +49,7 @@ async function createNewUser(req, res) {
 
 module.exports = {
     getAllUsers,
-    getUserById,
+    getUserByEmail,
     getTokenForUser,
     createNewUser
 }

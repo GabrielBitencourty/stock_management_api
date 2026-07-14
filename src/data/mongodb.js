@@ -5,7 +5,6 @@ async function databaseConnection(params) {
         await mongoose.connect(`mongodb+srv://${process.env.MONGO_DB_USER_NAME}:${process.env.MONGO_DB_USER_PASSWORD}@cluster0.brdx4q5.mongodb.net/${process.env.MONGO_DB_NAME}?appName=Cluster0`)
         console.log("Connected to the database!")
     } catch (err){
-        console.log(`Usuario: ${process.env.MONGO_DB_USER_NAME} Senha:${process.env.MONGO_DB_USER_PASSWORD}`)
         console.error("Connection failed to the DB", err)
         process.exit(1)
     }
