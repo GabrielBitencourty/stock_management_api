@@ -2,12 +2,30 @@ const user = require('../model/User.js');
 
 async function getAllUsers() {
     const users = await user.find({});
-    return users;
+
+    const usersObj = users.map((user) => {
+        return {
+            userName: user.userName,
+            email: user.email,
+            state: user.state,
+            userAccess: user.userAccess
+        }
+    })
+
+    return usersObj
 }
  
 async function createNewUser(payload) {
     const newUser = await user.create(payload)
-    return newUser
+    
+    const newUserObj = {
+        userName: newUser.userName,
+        email: newUser.email,
+        state: newUser.state,
+        userAccess: newUser.userAccess
+    } 
+
+    return newUserObj
 }
 
 async function getUserByEmail(userid) {
@@ -29,8 +47,37 @@ async function getUserByEmail(userid) {
     return userObj
 }
 
+async function updateUserByEmail(payload) {
+    const userUpdate = await user.updateOne(
+        {email: payload.email},
+        {
+            userName: payload.userName,
+            state: payload.state,
+            userAccess: payload.userAccess
+        }
+    )
+
+    const userUpdated = await user.findOne({
+        email: payload.email
+    })
+
+    if (!userUpdated){
+        return null
+    }
+
+    const updatedUserObj = {
+        userName: userUpdated.userName,
+        email: userUpdated.email,
+        state: userUpdated.state,
+        userAccess: userUpdated.userAccess
+    } 
+
+    return updatedUserObj
+}
+
 module.exports = {
     getAllUsers,
     getUserByEmail,
-    createNewUser
+    createNewUser,
+    updateUserByEmail
 };

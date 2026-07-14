@@ -47,9 +47,31 @@ async function createNewUser(req, res) {
    res.status(createUserResult.statusCode || 201).json(createUserResult)
 }
 
+async function updateUserByEmail(req, res) {
+    const userName = req.body.userName
+    const userEmail = req.body.email
+    const userState = req.body.state
+    const userAccess = req.body.userAccess
+
+    console.log(req.body)
+
+    if(!userName || !userState || !userAccess || !userEmail) {
+        return res.status(400).json({
+            message: "Bad request, missing required fields!",
+            requestTime: dateTime.getCurrentDateTime(),
+            httpCode: 400,
+            version: "0.0.1",
+        })
+    }
+
+    const updateUserResult = await userService.updateUserByEmail(req.body)
+    return res.status(updateUserResult.statusCode || 201).json(updateUserResult)
+}
+
 module.exports = {
     getAllUsers,
     getUserByEmail,
     getTokenForUser,
-    createNewUser
+    createNewUser,
+    updateUserByEmail
 }

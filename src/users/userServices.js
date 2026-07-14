@@ -92,8 +92,50 @@ async function createNewUser(body) {
     }
 }
 
+async function updateUserByEmail(body) {
+    try {
+        const userEmail = body.email
+
+        const userExist = await user.findOne({
+            email: userEmail
+        })
+
+        if(!userExist) {
+            return {
+                message: `User ${userEmail} not exist in our database`,
+                version: "1.0.0",
+                requestTime: dateTime.getCurrentDateTime(),
+                statusCode: 400,
+            }
+        }
+
+        const updateUserResponse = await userRepository.updateUserByEmail(body)
+
+        if (!updateUserResponse) {
+             return {
+                message: `Failed to update the user ${userEmail}`,
+                version: "1.0.0",
+                requestTime: dateTime.getCurrentDateTime(),
+                statusCode: 400,
+            }
+        }
+
+        return {
+            requestTime: dateTime.getCurrentDateTime(),
+            status: `User ${userEmail} updated successfully!`,
+            version: "1.0.0",
+            data: updateUserResponse
+        }
+
+    } catch (error) {
+        throw new Error(error.message)
+        console.log("Error Message: ", error.message)
+    }    
+}
+
 module.exports = {
     getAllUsers,
     getUserByEmail,
-    createNewUser
+    createNewUser,
+    updateUserByEmail
 }
