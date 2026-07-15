@@ -133,9 +133,78 @@ async function updateUserByEmail(body) {
     }    
 }
 
+async function deleteUser(email) {
+    try {
+        const userEmail = email
+
+        const userExist = await user.findOne({
+            email: userEmail
+        })
+
+        if(!userExist) {
+            return {
+                message: `User ${userEmail} not exist in our database`,
+                version: "1.0.0",
+                requestTime: dateTime.getCurrentDateTime(),
+                statusCode: 400,
+            }
+        }
+        
+        const userId = userExist._id
+        const deleteUserResponse = await userRepository.deleteUser(userId)
+
+        if (!deleteUserResponse) {
+             return {
+                message: `Failed to delete the user ${userEmail}`,
+                version: "1.0.0",
+                requestTime: dateTime.getCurrentDateTime(),
+                statusCode: 400,
+            }
+        }
+
+        return {
+            requestTime: dateTime.getCurrentDateTime(),
+            status: `User ${userEmail} has been deleted!`,
+            version: "1.0.0",
+        }
+
+    } catch(error){
+        throw new Error(error.message)
+        console.log("Error Message: ", error.message)
+    }
+}
+
+async function getUser(userEmail){
+    try {
+        const userId = userEmail
+        const userData = await userRepository.getUser(userId)
+
+        if (!userId || !userData) {
+            return {
+                requestTime: dateTime.getCurrentDateTime(),
+                status: 'User not found in our Database!',
+                statusCode: 404,
+                version: '1.0.0',
+            }
+        }
+
+        return {
+            requestTime: dateTime.getCurrentDateTime(),
+            status: 'Success: user founded!',
+            version: '1.0.0',
+            userData
+        }    
+    } catch (error) {
+        throw new Error(error.message)
+        console.log("Error Message: ",  error.message)
+    }
+}
+
 module.exports = {
     getAllUsers,
     getUserByEmail,
     createNewUser,
-    updateUserByEmail
+    updateUserByEmail,
+    getUser,
+    deleteUser
 }

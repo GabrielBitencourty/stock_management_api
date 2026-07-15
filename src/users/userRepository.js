@@ -47,6 +47,18 @@ async function getUserByEmail(userid) {
     return userObj
 }
 
+async function getUser(userEmail){
+    const uniqueUser = await user.findOne({
+        email: userEmail
+    })
+
+    if (!uniqueUser){
+        return null
+    }
+
+    return uniqueUser
+}
+
 async function updateUserByEmail(payload) {
     const userUpdate = await user.updateOne(
         {email: payload.email},
@@ -75,9 +87,19 @@ async function updateUserByEmail(payload) {
     return updatedUserObj
 }
 
+async function deleteUser(userID) {
+    const deleteUserRequest = await user.deleteOne({
+        _id: userID
+    })
+
+    return deleteUserRequest
+}
+
 module.exports = {
     getAllUsers,
     getUserByEmail,
     createNewUser,
-    updateUserByEmail
+    updateUserByEmail,
+    getUser,
+    deleteUser
 };

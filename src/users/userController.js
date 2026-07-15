@@ -53,8 +53,6 @@ async function updateUserByEmail(req, res) {
     const userState = req.body.state
     const userAccess = req.body.userAccess
 
-    console.log(req.body)
-
     if(!userName || !userState || !userAccess || !userEmail) {
         return res.status(400).json({
             message: "Bad request, missing required fields!",
@@ -68,10 +66,27 @@ async function updateUserByEmail(req, res) {
     return res.status(updateUserResult.statusCode || 201).json(updateUserResult)
 }
 
+async function deleteUser(req, res){
+ const { userEmail } = req.params;
+
+    if (!userEmail) {
+        return res.status(400).json({
+            message: "Bad request, missing required fields!",
+            requestTime: dateTime.getCurrentDateTime(),
+            httpCode: 400,
+            version: "0.0.1",
+        })
+    }
+
+    const deleteUserResult = await userService.deleteUser(userEmail)
+    res.status(deleteUserResult.statusCode || 200).json(deleteUserResult)
+}
+
 module.exports = {
     getAllUsers,
     getUserByEmail,
     getTokenForUser,
     createNewUser,
-    updateUserByEmail
+    updateUserByEmail,
+    deleteUser
 }

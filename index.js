@@ -6,9 +6,11 @@ require("dotenv").config();
 
 const databaseConnection = require('./src/data/mongodb.js')
 const users = require('./src/users/userRoutes.js')
+const auth = require('./src/authentication/authRoutes.js')
 
 app.use(express.json());
 app.use('/users', users);
+app.use('/authentication', auth)
 databaseConnection()
 
 app.get('/', (req, res) => {
