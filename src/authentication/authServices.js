@@ -51,6 +51,21 @@ async function signIn(body){
     };
 }
 
+async function signUp(body){
+    
+}
+
+async function passwordRecovery(body){
+
+}
+
+async function emailValidation(body){
+
+}
+
 module.exports = {
-    signIn
+    signIn,
+    signUp,
+    passwordRecovery,
+    emailValidation
 }
