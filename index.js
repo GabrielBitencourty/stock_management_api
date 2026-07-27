@@ -8,6 +8,7 @@ require("dotenv").config();
 const databaseConnection = require('./src/data/mongodb.js')
 const users = require('./src/users/userRoutes.js')
 const auth = require('./src/authentication/authRoutes.js')
+const products = require('./src/products/productsRoutes.js')
 
 app.use(cors({
     origin: "http://localhost:3000",
@@ -17,6 +18,7 @@ app.use(cors({
 app.use(express.json());
 app.use('/users', users);
 app.use('/authentication', auth)
+app.use('/products', products)
 databaseConnection()
 
 app.get('/', (req, res) => {
