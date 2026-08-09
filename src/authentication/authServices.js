@@ -38,7 +38,7 @@ async function signIn(body){
 
     const token = await generateUserToken(userExist.userData)
     return {
-        message: "Login successful.",
+        message: "Login successful!",
         token: token,
         user: {
             userName: userExist.userData.userName,
