@@ -5,8 +5,21 @@ async function getProducts(req, res) {
     res.status(200).json(products);
 }
 
-async function getProductById(req, res) {
-    const { productId } = req.params;  
+async function getProductByName(req, res) {
+    const productName = req.params.productName;
+
+    console.log("Pegou o nome: ", productName)
+
+    if (!productName) {
+        return res.status(400).json({
+            requestTime: new Date().toLocaleString("pt-BR"),
+            status: 'Error: Product ID is required',
+            version: '1.0.0',
+        });
+    }
+
+    const product = await productService.getProductByName(productName);
+    res.status(200).json(product);
 }
 
 async function createProduct(req, res) {
@@ -21,20 +34,15 @@ async function deleteProductById(req, res) {
 
 }
 
-async function getProductByName(req, res) {
-
-}
-
 async function createNewProduct(req, res) {
 
 }
 
 module.exports = {
     getProducts,
-    getProductById,
+    getProductByName,
     createProduct,
     updateProductById,
     deleteProductById,
-    getProductByName,
     createNewProduct
 }
