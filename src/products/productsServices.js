@@ -59,8 +59,18 @@ async function createNewProduct(body) {
     }
 }
 
-async function getProductsById() {
-
+async function getProductsById(productId) {
+    try {
+        return {
+          status: 'Success: API is running',
+          requestTime: dateTime.getCurrentDateTime(),
+          version: '1.0.0',
+          Products: await productRepository.getProductById(productId)
+        }
+    } catch (error) {
+        throw new Error(error.message)
+        console.log("Error Message: ", error.message)
+    }
 }
 
 module.exports = {

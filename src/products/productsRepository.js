@@ -1,4 +1,5 @@
 const product = require('../model/Product.js');
+const dateTime = require('../utils/datetimeFormat.js')
 
 async function getAllProducts() {
     const products = await product.find({});
@@ -13,9 +14,9 @@ async function getProductByName(productName) {
     if (!uniqueProduct) {
          return {
             requestTime: dateTime.getCurrentDateTime(),
-            status: 'Failed to get the product by Id',
+            status: 'Failed to get the product by Name',
             version: '1.0.0',
-            statuscode: 404
+            statusCode: 404
         }
     }
 
@@ -27,8 +28,26 @@ async function createNewProduct(payload) {
     return newProduct
 }
 
+async function getProductById(productId) {
+    const uniqueProduct = await product.findOne({
+        productId: productId
+    })
+
+    if (!uniqueProduct) {
+         return {
+            requestTime: dateTime.getCurrentDateTime(),
+            status: 'Failed to get the product by Id',
+            version: '1.0.0',
+            statusCode: 404
+        }
+    }
+
+    return uniqueProduct
+}
+
 module.exports = {
     getAllProducts,
     getProductByName,
-    createNewProduct
+    createNewProduct,
+    getProductById
 }

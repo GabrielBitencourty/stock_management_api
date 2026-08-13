@@ -17,8 +17,23 @@ async function getProductByName(req, res) {
         });
     }
 
-    const product = await productService.getProductByName(productName);
-    res.status(200).json(product);
+    const productResult = await productService.getProductByName(productName);
+    res.status(productResult.Products.statusCode || 200).json(productResult)
+}
+
+async function getProductById(req, res) {
+    const productId = req.params.productId
+
+    if(!productId) {
+        return res.status(400).json({
+            requestTime: dateTime.getCurrentDateTime(),
+            status: 'Error: Product ID is required!',
+            version: '1.0.0',
+        });
+    }
+
+    const productResult = await productService.getProductsById(productId)
+    res.status(productResult.Products.statusCode || 200).json(productResult)
 }
 
 async function updateProductById(req, res) {
@@ -39,22 +54,7 @@ async function createNewProduct(req, res) {
     }
 
     const newProduct = await productService.createNewProduct(req.body)
-    res.status(200).json(newProduct);
-}
-
-async function getProductById(req, res) {
-    const productId = req.params.productId
-
-    if(!productId) {
-        return res.status(400).json({
-            requestTime: dateTime.getCurrentDateTime(),
-            status: 'Error: Product ID is required!',
-            version: '1.0.0',
-        });
-    }
-
-    const product = await productService.getProductsById(productId)
-    res.status(200).json(product)
+    res.status(newProduct.statusCode || 201).json(newProduct)
 }
 
 module.exports = {
