@@ -1,7 +1,7 @@
-const dateTime = require('../utils/datetimeFormat.js')
 const productRepository = require('./productsRepository.js')
 const { default: mongoose } = require('mongoose');
 const product = require('./productsRoutes.js');
+const dateTime = require('../utils/datetimeFormat.js')
 
 async function getAllProducts() {
     try {
@@ -20,7 +20,6 @@ async function getAllProducts() {
 async function getProductByName(productName) {
     try {
         return {
-          requestTime: dateTime.getCurrentDateTime(),
           status: 'Success: API is running',
           version: '1.0.0',
           Products: await productRepository.getProductByName(productName)
@@ -36,6 +35,7 @@ async function createNewProduct(body) {
         const payload = {
             _id: new mongoose.Types.ObjectId(),
             productName: body.productName,
+            productId: body.productId,
             productDescription: body.productDescription,
             productPrice: body.productPrice,
             productCost: body.productCost,
@@ -59,8 +59,13 @@ async function createNewProduct(body) {
     }
 }
 
+async function getProductsById() {
+
+}
+
 module.exports = {
     getAllProducts,
     getProductByName,
-    createNewProduct
+    createNewProduct,
+    getProductsById
 }
