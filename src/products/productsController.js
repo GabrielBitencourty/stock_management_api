@@ -1,4 +1,5 @@
 const productService = require("./productsServices")
+const dateTime = require('../utils/datetimeFormat')
 
 async function getProducts(req, res) {
     const products = await productService.getAllProducts();
@@ -20,10 +21,6 @@ async function getProductByName(req, res) {
     res.status(200).json(product);
 }
 
-async function createProduct(req, res) {
-    const { productName, productDescription, productPrice } = req.body;
-}
-
 async function updateProductById(req, res) {
 
 }
@@ -33,13 +30,21 @@ async function deleteProductById(req, res) {
 }
 
 async function createNewProduct(req, res) {
+    if (!req.body) {
+        return res.status(404).json({
+            requestTime: dateTime.getCurrentDateTime(),
+            status: 'Error: Missing body!',
+            version: '1.0.0',
+        });
+    }
 
+    const newProduct = await productService.createNewProduct(req.body)
+    res.status(200).json(newProduct);
 }
 
 module.exports = {
     getProducts,
     getProductByName,
-    createProduct,
     updateProductById,
     deleteProductById,
     createNewProduct

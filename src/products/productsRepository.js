@@ -22,7 +22,13 @@ async function getProductByName(productName) {
     return uniqueProduct
 }
 
+async function createNewProduct(payload) {
+    const newProduct = await product.create(payload)
+    return newProduct
+}
+
 module.exports = {
     getAllProducts,
-    getProductByName
+    getProductByName,
+    createNewProduct
 }
