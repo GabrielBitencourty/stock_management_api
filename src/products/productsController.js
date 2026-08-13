@@ -8,8 +8,6 @@ async function getProducts(req, res) {
 async function getProductByName(req, res) {
     const productName = req.params.productName;
 
-    console.log("Pegou o nome: ", productName)
-
     if (!productName) {
         return res.status(400).json({
             requestTime: new Date().toLocaleString("pt-BR"),
