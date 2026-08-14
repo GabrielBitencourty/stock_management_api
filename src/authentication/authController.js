@@ -4,7 +4,7 @@ const authService = require('./authServices')
 const userServices = require('../users/userServices')
 
 async function signIn(req, res) {
-    const userEmail = req.body.email
+    const userEmail = req.body.userEmail
     const userPassword = req.body.password
 
     if (!userEmail || !userPassword) {
@@ -82,7 +82,19 @@ async function deleteMyAccount(req, res) {
 }
 
 async function emailValidation(req, res){
+    const email = req.params.userEmail
 
+    if(!email || email == ":userEmail") {
+        return res.status(400).json({
+            message: "Bad request, missing required fields!",
+            requestTime: dateTime.getCurrentDateTime(),
+            statusCode: 400,
+            version: "0.0.1",
+        })
+    }
+
+    const emailValidationResult = await authService.emailValidation(email)
+    res.status(emailValidationResult.statusCode || 200).json(emailValidationResult)
 }
 
 module.exports = {

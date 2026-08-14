@@ -8,7 +8,7 @@ const generateUserToken = require('../utils/generateUserToken')
 
 async function signIn(body){
     try {
-        const userEmail = body.email
+        const userEmail = body.userEmail
         const userPassword = body.password
         const userExist = await userServices.getUser(userEmail)
 
@@ -67,7 +67,12 @@ async function passwordRecovery(body){
 }
 
 async function emailValidation(body){
+    try {
 
+    } catch (error) {
+        throw new Error(error.message)
+        console.log("Error:", error.message)
+    }
 }
 
 async function deleteMyAccount(userEmail) {
