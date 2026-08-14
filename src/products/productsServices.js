@@ -1,6 +1,6 @@
 const productRepository = require('./productsRepository.js')
 const { default: mongoose } = require('mongoose');
-const product = require('./productsRoutes.js');
+const product = require('../model/Product.js');
 const dateTime = require('../utils/datetimeFormat.js')
 
 async function getAllProducts() {
@@ -32,6 +32,22 @@ async function getProductByName(productName) {
 
 async function createNewProduct(body) {
     try {
+        const dbProductValidation = await product.findOne({
+            $or: [
+                { productName: body.productName },
+                { productId: body.productId }
+            ]
+        })
+
+         if (dbProductValidation) {
+            return {
+                message: "Product already exists!",
+                version: "1.0.0",
+                requestTime: dateTime.getCurrentDateTime(),
+                statusCode: 409,
+            }
+        }
+
         const payload = {
             _id: new mongoose.Types.ObjectId(),
             productName: body.productName,
