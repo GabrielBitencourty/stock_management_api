@@ -65,10 +65,30 @@ async function passwordRecovery(req, res){
 
 }
 
+async function deleteMyAccount(req, res) {
+    const userEmail = req.params.userEmail
+
+    if (!userEmail || userEmail == ":userEmail") {
+        return res.status(400).json({
+            message: "Bad request, missing required fields!",
+            requestTime: dateTime.getCurrentDateTime(),
+            statusCode: 400,
+            version: "0.0.1",
+        })
+    }
+
+    const userDeleteResult = await authService.deleteMyAccount(userEmail)
+    res.status(userDeleteResult.statusCode || 202).json(userDeleteResult)
+}
+
 async function emailValidation(req, res){
 
 }
 
 module.exports = {
-    signIn
+    signIn,
+    signUp,
+    passwordRecovery,
+    deleteMyAccount,
+    emailValidation
 }
