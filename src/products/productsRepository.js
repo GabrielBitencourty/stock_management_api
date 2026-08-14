@@ -64,8 +64,9 @@ async function updateProductById(productId, body) {
     return productUpdated
 }
 
-async function deleteProductById() {
-
+async function deleteProductById(productId) {
+    const deleteProduct = await product.deleteOne({productId: productId})
+    return deleteProduct
 }
 
 module.exports = {
@@ -73,5 +74,6 @@ module.exports = {
     getProductByName,
     createNewProduct,
     getProductById,
-    updateProductById
+    updateProductById,
+    deleteProductById
 }

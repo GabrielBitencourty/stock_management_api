@@ -77,6 +77,17 @@ async function createNewProduct(body) {
 
 async function getProductsById(productId) {
     try {
+        const productExist = await product.findOne({productId: productId})
+
+        if (!productExist) {
+            return {
+                message: "Product Not found!",
+                version: "1.0.0",
+                requestTime: dateTime.getCurrentDateTime(),
+                statusCode: 409,
+            }
+        }
+
         return {
           status: 'Success: API is running',
           requestTime: dateTime.getCurrentDateTime(),
@@ -115,10 +126,37 @@ async function updateProductById(productId, body) {
     }
 }
 
+async function deleteProductById(productId){
+    try {
+        const productExist = await product.findOne({productId: productId})
+
+        if (!productExist) {
+            return {
+                message: "Product Not found!",
+                version: "1.0.0",
+                requestTime: dateTime.getCurrentDateTime(),
+                statusCode: 409,
+            }
+        }
+
+        return {
+            message: "Product Not found!",
+            version: "1.0.0",
+            requestTime: dateTime.getCurrentDateTime(),
+            product: await productRepository.deleteProductById(productId)
+        }
+
+    } catch (error){
+        throw new Error(error.message)
+        console.log("Error:", error.message)
+    }
+}
+
 module.exports = {
     getAllProducts,
     getProductByName,
     createNewProduct,
     getProductsById,
-    updateProductById
+    updateProductById,
+    deleteProductById
 }

@@ -61,7 +61,18 @@ async function updateProductById(req, res) {
 }
 
 async function deleteProductById(req, res) {
+    const productId = req.params.productId
 
+    if(!productId){
+        return res.status(400).json({
+            requestTime: dateTime.getCurrentDateTime(),
+            status: 'Error: productId is required',
+            version: '1.0.0',
+        }); 
+    }
+
+    const deleteResult = await productService.deleteProductById(productId)
+    res.status(deleteResult.statusCode || 200).json(deleteResult)
 }
 
 async function createNewProduct(req, res) {
