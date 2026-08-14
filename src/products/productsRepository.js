@@ -1,5 +1,5 @@
 const product = require('../model/Product.js');
-const dateTime = require('../utils/datetimeFormat.js')
+const dateTime = require('../utils/datetimeFormat.js');
 
 async function getAllProducts() {
     const products = await product.find({});
@@ -45,9 +45,33 @@ async function getProductById(productId) {
     return uniqueProduct
 }
 
+async function updateProductById(productId, body) {
+    const updateProduct = await product.updateOne(
+        {productId: productId},
+        {
+            productName: body.productName,
+            productDescription: body.productDescription,
+            productPrice: body.productPrice,
+            productCost: body.productCost,
+            productStock: body.productStock,
+            productCategory: body.productCategory,
+            productBrand: body.productBrand,
+            productImage: body.productImage
+        }
+    )
+
+    const productUpdated = await product.findOne({productId: productId})
+    return productUpdated
+}
+
+async function deleteProductById() {
+
+}
+
 module.exports = {
     getAllProducts,
     getProductByName,
     createNewProduct,
-    getProductById
+    getProductById,
+    updateProductById
 }

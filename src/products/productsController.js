@@ -37,7 +37,27 @@ async function getProductById(req, res) {
 }
 
 async function updateProductById(req, res) {
+    const productId = req.params.productId
+    const body = req.body
 
+    if (productId == ":productId") {
+      return res.status(400).json({
+            requestTime: dateTime.getCurrentDateTime(),
+            status: 'Error: productId is required',
+            version: '1.0.0',
+        });  
+    }
+
+    if (!body) {
+        return res.status(400).json({
+            requestTime: dateTime.getCurrentDateTime(),
+            status: 'Error: body is required',
+            version: '1.0.0',
+        });
+    }
+
+    const productResults = await productService.updateProductById(productId, body)
+    res.status( productResults.statusCode || 200).json(productResults)
 }
 
 async function deleteProductById(req, res) {
