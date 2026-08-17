@@ -1,13 +1,15 @@
 const jwt = require("jsonwebtoken")
 
-async function userTokenGeneration(user) {
+async function AccessTokenGeneration(user) {
     const token = jwt.sign(
         {
+            userId: user._id,
             email: user.email,
+            userAccess: user.userAccess
         },
         process.env.JWT_SECRET,
         {
-            expiresIn: "1h"
+            expiresIn: "24h"
         }
     );
 
@@ -15,4 +17,4 @@ async function userTokenGeneration(user) {
 
 }
 
-module.exports = userTokenGeneration
+module.exports = AccessTokenGeneration

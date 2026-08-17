@@ -3,6 +3,7 @@ const user = require('../model/User.js');
 const dateTime = require('../utils/datetimeFormat.js')
 const passwordEncryption = require('../utils/passwordEncryption.js');
 const { default: mongoose } = require('mongoose');
+const generateUserToken = require('../utils/generateUserToken.js')
 
 async function getAllUsers() {
     try {
@@ -200,11 +201,39 @@ async function getUser(userEmail){
     }
 }
 
+async function getTokenForUser(userEmail) {
+ try {
+    const verifyEmail = await user.findOne({email: userEmail})
+
+    if (verifyEmail === null) {
+        return {
+            requestTime: dateTime.getCurrentDateTime(),
+            message: 'Unable to get token for user!',
+            statusCode: 404,
+            version: '1.0.0',
+        }
+    }
+
+    const token = await generateUserToken(userEmail)
+    return {
+        message: "Token successful created!",
+        token: token,
+        requestTime: dateTime.getCurrentDateTime(),
+        version: "0.0.1"
+    };
+
+ } catch (error) {
+    throw new Error(error.message)
+    console.log("Erro:", error.message)
+ }
+}
+
 module.exports = {
     getAllUsers,
     getUserByEmail,
     createNewUser,
     updateUserByEmail,
     getUser,
-    deleteUser
+    deleteUser,
+    getTokenForUser
 }

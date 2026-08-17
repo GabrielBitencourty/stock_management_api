@@ -4,7 +4,7 @@ const user = require('../model/User')
 const userRepository = require('../users/userRepository')
 const authRepository = require('./authRepository')
 const passwordValidation = require('../utils/passwordValidation')
-const generateUserToken = require('../utils/generateUserToken')
+const generateAccessToken = require('../utils/generateAccessToken')
 
 async function signIn(body){
     try {
@@ -39,7 +39,7 @@ async function signIn(body){
             }
         }
 
-        const token = await generateUserToken(userExist.userData)
+        const token = await generateAccessToken(userExist.userData)
         return {
             message: "Login successful!",
             token: token,

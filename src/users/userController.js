@@ -14,7 +14,6 @@ async function getUserByEmail(req, res) {
         return res.status(400).json({
             message: "Bad request, missing required fields!",
             requestTime: dateTime.getCurrentDateTime(),
-            httpCode: 400,
             version: "0.0.1",
         })
     }
@@ -25,8 +24,17 @@ async function getUserByEmail(req, res) {
 
 async function getTokenForUser(req, res) {
     const { email } = req.params;
-    const token = userService.getTokenForUser(email)
-    res.status(200).json(token)
+
+    if (!email || email == ":email") {
+        return res.status(400).json({
+            message: "Bad request, missing required fields!",
+            requestTime: dateTime.getCurrentDateTime(),
+            version: "0.0.1",
+        })
+    }
+
+    const tokenResponse = await userService.getTokenForUser(email)
+    res.status(tokenResponse.statusCode || 200).json(tokenResponse)
 }
 
 async function createNewUser(req, res) {
@@ -38,7 +46,6 @@ async function createNewUser(req, res) {
         return res.status(400).json({
             message: "Bad request, missing required fields!",
             requestTime: dateTime.getCurrentDateTime(),
-            httpCode: 400,
             version: "0.0.1",
         })
     }
@@ -57,7 +64,6 @@ async function updateUserByEmail(req, res) {
         return res.status(400).json({
             message: "Bad request, missing required fields!",
             requestTime: dateTime.getCurrentDateTime(),
-            httpCode: 400,
             version: "0.0.1",
         })
     }
@@ -73,7 +79,6 @@ async function deleteUser(req, res){
         return res.status(400).json({
             message: "Bad request, missing required fields!",
             requestTime: dateTime.getCurrentDateTime(),
-            httpCode: 400,
             version: "0.0.1",
         })
     }
