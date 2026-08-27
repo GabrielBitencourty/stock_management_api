@@ -99,11 +99,27 @@ async function deleteUser(req, res){
     res.status(deleteUserResult.statusCode || 200).json(deleteUserResult)
 }
 
+async function getAccessToken(req, res) {
+    const email = req.params.email
+
+    if (!email){
+        return res.status(400).json({
+            message: "Bad request, missing required fields!",
+            requestTime: dateTime.getCurrentDateTime(),
+            version: "0.0.1",
+        })
+    }
+
+    const accessToken = await userService.getAccessToken(email)
+    res.status(accessToken.statusCode || 200).json(accessToken)
+}
+
 module.exports = {
     getAllUsers,
     getUserByEmail,
     getTokenForUser,
     createNewUser,
     updateUserByEmail,
-    deleteUser
+    deleteUser,
+    getAccessToken,
 }

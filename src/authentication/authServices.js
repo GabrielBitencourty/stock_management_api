@@ -1,7 +1,6 @@
 const dateTime = require('../utils/datetimeFormat')
 const userServices = require('../users/userServices')
 const user = require('../model/User')
-const userRepository = require('../users/userRepository')
 const authRepository = require('./authRepository')
 const passwordValidation = require('../utils/passwordValidation')
 const generateAccessToken = require('../utils/generateAccessToken')
