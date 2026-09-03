@@ -1,7 +1,7 @@
 const productRepository = require('./productsRepository.js')
 const { default: mongoose } = require('mongoose');
 const product = require('../model/Product.js');
-const dateTime = require('../utils/datetimeFormat.js')
+const dateTime = require('../utils/datetimeUtils.js')
 
 async function getAllProducts() {
     try {

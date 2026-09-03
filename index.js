@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const port = 8080
-const date = new Date().toLocaleString("pt-BR");
 const cors = require("cors")
 require("dotenv").config();
 

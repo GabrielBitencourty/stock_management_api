@@ -1,6 +1,6 @@
 const userRepository = require('./userRepository.js')
 const user = require('../model/User.js');
-const dateTime = require('../utils/datetimeFormat.js')
+const dateTime = require('../utils/datetimeUtils.js')
 const passwordEncryption = require('../utils/passwordEncryption.js');
 const { default: mongoose } = require('mongoose');
 const generateUserToken = require('../utils/generateUserToken.js')

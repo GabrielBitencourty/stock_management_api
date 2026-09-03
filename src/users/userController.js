@@ -1,7 +1,5 @@
-const userService = require("./userServices")
-const express = require('express')
-const dateTime = require('../utils/datetimeFormat');
-const validateUserToken = require("../utils/validateUserToken");
+const userService = require('./userServices.js')
+const dateTime = require('../utils/datetimeUtils.js');
 
 async function getAllUsers(req, res) {
     const users = await userService.getAllUsers();
@@ -25,17 +23,6 @@ async function getUserByEmail(req, res) {
 
 async function getTokenForUser(req, res) {
     const { email } = req.params
-    const basicToken = req.headers.authentication
-
-    if (!basicToken) {
-        return res.status(401).json({
-           message: "Bad request, Unauthorized!",
-           version: "0.0.1", 
-           requestTime: dateTime.getCurrentDateTime(),
-        })
-    }
-
-    validateUserToken(basicToken)
 
     if (!email || email == ":email") {
         return res.status(400).json({

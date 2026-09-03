@@ -1,9 +1,9 @@
-const dateTime = require('../utils/datetimeFormat')
-const userServices = require('../users/userServices')
-const user = require('../model/User')
-const authRepository = require('./authRepository')
-const passwordValidation = require('../utils/passwordValidation')
-const generateAccessToken = require('../utils/generateAccessToken')
+const dateTime = require('../utils/datetimeUtils.js')
+const userServices = require('../users/userServices.js')
+const user = require('../model/User.js')
+const authRepository = require('./authRepository.js')
+const passwordValidation = require('../utils/passwordValidation.js')
+const generateAccessToken = require('../utils/generateAccessToken.js')
 
 async function signIn(body){
     try {

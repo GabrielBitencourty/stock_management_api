@@ -1,5 +1,5 @@
 const product = require('../model/Product.js');
-const dateTime = require('../utils/datetimeFormat.js');
+const dateTime = require('../utils/datetimeUtils.js');
 
 async function getAllProducts() {
     const products = await product.find({});

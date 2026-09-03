@@ -1,6 +1,6 @@
-const dateTime = require('../utils/datetimeFormat')
-const authService = require('./authServices')
-const userServices = require('../users/userServices')
+const dateTime = require('../utils/datetimeUtils.js')
+const authService = require('./authServices.js')
+const userServices = require('../users/userServices.js')
 
 async function signIn(req, res) {
     const userEmail = req.body.userEmail

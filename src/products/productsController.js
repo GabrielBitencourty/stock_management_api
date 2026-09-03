@@ -1,5 +1,5 @@
 const productService = require("./productsServices")
-const dateTime = require('../utils/datetimeFormat.js')
+const dateTime = require('../utils/datetimeUtils.js')
 
 async function getProducts(req, res) {
     const products = await productService.getAllProducts();
