@@ -1,5 +1,4 @@
 const dateTime = require('../utils/datetimeFormat')
-const express = require('express')
 const authService = require('./authServices')
 const userServices = require('../users/userServices')
 
