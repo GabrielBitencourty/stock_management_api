@@ -5,6 +5,14 @@ async function getAllClients() {
     return clients;
 }
 
+async function getClientById(id) {
+    const clientResult = await client.findOne({
+        _id: id
+    })
+
+    return clientResult
+}
+
 async function createNewClient(payload) {
     const newClients = await client.create(payload)
 
@@ -21,7 +29,36 @@ async function createNewClient(payload) {
     return newClientObj
 }
 
+async function deleteClient(email) {
+    const deleteClient = await client.deleteOne({
+        clientEmail: email
+    })
+
+    return {
+        message: "Client deleted!",
+        data: deleteClient
+    }
+}
+
+async function updateClient(clientId, body) {
+    const clientUpdate = await client.updateOne(
+        {
+            _id: clientId
+        },
+        {
+            clientName: body.clientName,
+            clientEmail: body.clientEmail,
+            clientNumber: body.clientNumber,
+            clientStatus: body.clientStatus
+        }
+    )
+    return clientUpdate
+}
+
 module.exports = {
     getAllClients,
-    createNewClient
+    getClientById,
+    createNewClient,
+    deleteClient,
+    updateClient
 }

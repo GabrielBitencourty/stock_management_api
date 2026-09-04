@@ -7,7 +7,7 @@ async function userTokenGeneration(user) {
         },
         process.env.JWT_SECRET,
         {
-            expiresIn: "12h"
+            expiresIn: "4h"
         }
     );
 
