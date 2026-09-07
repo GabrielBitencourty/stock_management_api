@@ -184,7 +184,7 @@ async function getUser(userEmail){
         if (!userId || !userData) {
             return {
                 requestTime: dateTime.getCurrentDateTime(),
-                status: 'User not found in our Database!',
+                message: 'User not found in our Database!',
                 statusCode: 404,
                 version: '1.0.0',
             }
@@ -197,8 +197,8 @@ async function getUser(userEmail){
             userData
         }    
     } catch (error) {
-        throw new Error(error.message)
         console.log("Error Message: ",  error.message)
+        throw error
     }
 }
 

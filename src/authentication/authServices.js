@@ -25,7 +25,6 @@ async function signIn(body){
             }
         }
 
-
         const dbPassword = userExist.userData.password
         const passwordValidated = await passwordValidation(userPassword, dbPassword)
 
@@ -52,8 +51,8 @@ async function signIn(body){
             version: "0.0.1"
         };
     } catch (error) {
-        throw new Error(error.message);
         console.log("Error: ", error.message)
+        throw error
     }
 }
 
@@ -69,8 +68,8 @@ async function emailValidation(body){
     try {
 
     } catch (error) {
-        throw new Error(error.message)
         console.log("Error:", error.message)
+        throw error
     }
 }
 
@@ -96,8 +95,8 @@ async function deleteMyAccount(userEmail) {
         };
 
     } catch (error) {
-        throw new Error(error.message)
         console.log("Error:", error.message)
+        throw error
     }
 }
 
