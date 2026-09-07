@@ -66,7 +66,7 @@ async function passwordRecovery(body){
 
 async function emailValidation(body){
     try {
-
+        
     } catch (error) {
         console.log("Error:", error.message)
         throw error

@@ -5,11 +5,13 @@ const dateTime = require('../utils/datetimeUtils.js')
 
 async function getAllClients() {
     try {
+        const clients = await clientsRepository.getAllClients()
         return {
             requestTime: dateTime.getCurrentDateTime(),
             status: 'Success: API is running',
             version: '1.0.0',
-            clients: await clientsRepository.getAllClients()
+            clients: clients,
+            clientsCount: clients.length
         };
     } catch (error) {
         console.log("Error:", error.message)

@@ -5,15 +5,18 @@ const dateTime = require('../utils/datetimeUtils.js')
 
 async function getAllProducts() {
     try {
+        const products = await productRepository.getAllProducts()
+
         return {
           requestTime: dateTime.getCurrentDateTime(),
           status: 'Success: API is running',
           version: '1.0.0',
-          Products: await productRepository.getAllProducts()
-        };
+          Products: products,
+          totalProducts: products.length 
+        }
     } catch (error) {
-        throw new Error(error.message)
         console.log("Error Message: ",  error.message)
+        throw error
     }
 }
 
@@ -25,8 +28,8 @@ async function getProductByName(productName) {
           Products: await productRepository.getProductByName(productName)
         }
     } catch (error) {
-        throw new Error(error.message)
         console.log("Failed to get product by Id: ", error.message)
+        throw error
     }
 }
 
@@ -70,8 +73,8 @@ async function createNewProduct(body) {
           Products: await productRepository.createNewProduct(payload)
         }
     } catch (error) {
-        throw new Error(error.message)
         console.log("Error Message: ", error.message)
+        throw error
     }
 }
 
@@ -95,8 +98,8 @@ async function getProductsById(productId) {
           Products: await productRepository.getProductById(productId)
         }
     } catch (error) {
-        throw new Error(error.message)
         console.log("Error Message: ", error.message)
+        throw error
     }
 }
 
@@ -121,8 +124,8 @@ async function updateProductById(productId, body) {
         }
 
     } catch (error) {
-        throw new Error(error.message)
         console.log("Error: ", error.message)
+        throw error
     }
 }
 
@@ -147,8 +150,8 @@ async function deleteProductById(productId){
         }
 
     } catch (error){
-        throw new Error(error.message)
         console.log("Error:", error.message)
+        throw error
     }
 }
 

@@ -8,15 +8,17 @@ const generateAccessToken = require('../utils/generateAccessToken.js')
 
 async function getAllUsers() {
     try {
+        const users = await userRepository.getAllUsers()
         return {
             requestTime: dateTime.getCurrentDateTime(),
             status: 'Success: API is running',
             version: '1.0.0',
-            Users: await userRepository.getAllUsers()
+            Users: users,
+            usersCount: users.length
         };
     } catch (error) {
-        throw new Error(error.message)
         console.log("Error Message: ",  error.message)
+        throw error
     }
 }
 
@@ -41,8 +43,8 @@ async function getUserByEmail(userEmail){
             userData 
         }    
     } catch (error) {
-        throw new Error(error.message)
         console.log("Error Message: ",  error.message)
+        throw error
     }
 }
 
@@ -89,8 +91,8 @@ async function createNewUser(body) {
         }
 
     } catch (error) {
-        throw new Error(error.message)
         console.log("Error Message: ", error.message)
+        throw error
     }
 }
 
@@ -130,8 +132,8 @@ async function updateUserByEmail(body) {
         }
 
     } catch (error) {
-        throw new Error(error.message)
         console.log("Error Message: ", error.message)
+        throw error
     }    
 }
 
@@ -171,8 +173,8 @@ async function deleteUser(email) {
         }
 
     } catch(error){
-        throw new Error(error.message)
         console.log("Error Message: ", error.message)
+        throw error
     }
 }
 
@@ -224,8 +226,8 @@ async function getTokenForUser(userEmail) {
     };
 
  } catch (error) {
-    throw new Error(error.message)
     console.log("Erro:", error.message)
+    throw error
  }
 }
 
@@ -251,8 +253,8 @@ async function getAccessToken(email) {
         };
 
     } catch (error) {
-        throw new Error(error.message)
         console.log("Error:", error.message)
+        throw error
     }
 }
 

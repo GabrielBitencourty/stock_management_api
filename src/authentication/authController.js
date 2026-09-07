@@ -81,9 +81,10 @@ async function deleteMyAccount(req, res) {
 }
 
 async function emailValidation(req, res){
-    const email = req.params.userEmail
+    const email = req.body.userEmail
+    const authCod = req.body.authCod
 
-    if(!email || email == ":userEmail") {
+    if(!email || !authCod) {
         return res.status(400).json({
             message: "Bad request, missing required fields!",
             requestTime: dateTime.getCurrentDateTime(),
@@ -92,7 +93,7 @@ async function emailValidation(req, res){
         })
     }
 
-    const emailValidationResult = await authService.emailValidation(email)
+    const emailValidationResult = await authService.emailValidation(req.body)
     res.status(emailValidationResult.statusCode || 200).json(emailValidationResult)
 }
 
