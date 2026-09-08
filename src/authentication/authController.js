@@ -97,10 +97,17 @@ async function emailValidation(req, res){
     res.status(emailValidationResult.statusCode || 200).json(emailValidationResult)
 }
 
+async function validateToken(req, res) {
+    const token =  req.headers.authorization
+
+    
+}
+
 module.exports = {
     signIn,
     signUp,
     passwordRecovery,
     deleteMyAccount,
-    emailValidation
+    emailValidation,
+    validateToken
 }
