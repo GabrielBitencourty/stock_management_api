@@ -9,6 +9,7 @@ const users = require('./src/users/userRoutes.js')
 const auth = require('./src/authentication/authRoutes.js')
 const products = require('./src/products/productsRoutes.js')
 const clients = require('./src/clients/clientsRouter.js')
+const purchases = require('./src/purchases/purchasesRouter.js')
 
 app.use(cors({
     origin: "http://localhost:3000",
@@ -20,6 +21,7 @@ app.use('/users', users);
 app.use('/authentication', auth)
 app.use('/products', products)
 app.use('/clients', clients)
+app.use('/purchases', purchases)
 databaseConnection()
 
 app.listen(port, () => {
