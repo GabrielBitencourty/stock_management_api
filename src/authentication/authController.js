@@ -46,12 +46,13 @@ async function signUp(req, res){
         password
     }
 
+    const signUpResult = await userServices.createNewUser(payload)
+
     const signInPayload = {
         email: userEmail,
         password
     }
 
-    const signUpResult = await userServices.createNewUser(payload)
     if(signUpResult.statusCode === 409){
         return res.status(409).json(signUpResult)
     }
