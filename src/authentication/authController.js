@@ -97,10 +97,20 @@ async function emailValidation(req, res){
     res.status(emailValidationResult.statusCode || 200).json(emailValidationResult)
 }
 
+async function validateToken(req, res) {
+    res.status(200).json({
+        message: "Token is valid",
+        requestTime: dateTime.getCurrentDateTime(),
+        statusCode: 200,
+        version: "0.0.1",
+    })
+}
+
 module.exports = {
     signIn,
     signUp,
     passwordRecovery,
     deleteMyAccount,
-    emailValidation
+    emailValidation,
+    validateToken
 }
