@@ -19,10 +19,10 @@ async function signIn(req, res) {
     res.status(signInResponse.statusCode || 200).json(signInResponse)
 }
 
-async function signUp(req, res){
+async function signUp(req, res) {
     const { userEmail, userName, password, confirmPassword } = req.body
 
-    if (!userEmail ||!userName ||!password  ||!confirmPassword) {
+    if (!userEmail || !userName || !password || !confirmPassword) {
         return res.status(400).json({
             message: "Bad request, missing required fields!",
             requestTime: dateTime.getCurrentDateTime(),
@@ -46,18 +46,22 @@ async function signUp(req, res){
         password
     }
 
+    const signUpResult = await userServices.createNewUser(payload)
+
+    if (signUpResult.statusCode !== 201) {
+        return res.status(signUpResult.statusCode).json(signUpResult)
+    }
+
     const signInPayload = {
-        email: userEmail,
+        userEmail: userEmail,
         password
     }
 
-    const signUpResult = await userServices.createNewUser(payload)
-    if(signUpResult.statusCode === 409){
-        return res.status(409).json(signUpResult)
-    }
-
     const signInResult = await authService.signIn(signInPayload)
-    res.status(signInResult.statusCode).json(signInResult)
+
+    return res
+        .status(signInResult.statusCode)
+        .json(signInResult)
 }
 
 async function passwordRecovery(req, res){
