@@ -86,6 +86,7 @@ async function createNewUser(body) {
         return {
             requestTime: dateTime.getCurrentDateTime(),
             status: "User created successfully!",
+            statusCode: 201,
             version: "1.0.0",
             data: createdUser
         }
