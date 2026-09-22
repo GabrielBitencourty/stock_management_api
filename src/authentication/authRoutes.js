@@ -8,6 +8,6 @@ auth.post('/signup', authController.signUp)
 auth.delete('/delete/:userEmail', authController.deleteMyAccount)
 auth.post('/passwordRecovery/:userEmail', authController.passwordRecovery)
 auth.post('/emailValidation', authController.emailValidation)
-auth.post('/validateToken', tokenVerification, authController.validateToken)
+auth.post('/validateToken', tokenVerification)
 
 module.exports = auth
