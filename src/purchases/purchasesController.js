@@ -34,8 +34,13 @@ async function deletePurchase(req, res) {
     return res.status(purchaseResult.statusCode || 200).json(purchaseResult)
 }
 
+async function createNewPurchase(req, res) {
+
+}
+
 module.exports = {
     getAllPurchases,
     getPurchaseById,
-    deletePurchase
+    deletePurchase,
+    createNewPurchase
 }
