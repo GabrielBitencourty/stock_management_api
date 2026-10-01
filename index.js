@@ -11,7 +11,7 @@ const products = require('./src/products/productsRoutes.js')
 const clients = require('./src/clients/clientsRouter.js')
 
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTEND_URL,
     credentials: true
 }));
 
