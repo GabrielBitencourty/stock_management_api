@@ -179,10 +179,9 @@ async function deleteUser(email) {
     }
 }
 
-async function getUser(userEmail){
+async function getUserById(userId){
     try {
-        const userId = userEmail
-        const userData = await userRepository.getUser(userId)
+        const userData = await userRepository.getUserById(userId)
 
         if (!userId || !userData) {
             return {
@@ -197,7 +196,7 @@ async function getUser(userEmail){
             requestTime: dateTime.getCurrentDateTime(),
             status: 'Success: user founded!',
             version: '1.0.0',
-            userData
+            userData: userData
         }    
     } catch (error) {
         console.log("Error Message: ",  error.message)
@@ -262,9 +261,9 @@ async function getAccessToken(email) {
 module.exports = {
     getAllUsers,
     getUserByEmail,
+    getUserById,
     createNewUser,
     updateUserByEmail,
-    getUser,
     deleteUser,
     getTokenForUser,
     getAccessToken
