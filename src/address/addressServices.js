@@ -27,6 +27,31 @@ async function getListOfAdress() {
     }
 }
 
+async function getAddressByAddressId(addressId) {
+    try {
+        const address = await addressRepository.getAddressByAddressId(addressId)
+
+        if (!address) {
+            return {
+                dateTime: dateTime.getCurrentDateTime,
+                message: "Something went wrong!",
+                statusCode: 404
+            }
+        }
+
+        return {
+            dateTime: dateTime.getCurrentDateTime,
+            message: "Data successfully recovered!",
+            statusCode: 200,
+            data: address
+        }
+
+    } catch (error) {
+        console.log("Error:", error)
+        throw error
+    }
+}
+
 async function createNewAddress(userId, body) {
     try {
         const userValid = await userServices.getUserById(userId)
@@ -69,7 +94,63 @@ async function createNewAddress(userId, body) {
     }
 }
 
+async function updateAddressById(addressId, body) {
+    try {
+        const address = await getAddressByAddressId(addressId)
+
+        if (!address) {
+            return {
+                dateTime: dateTime.getCurrentDateTime,
+                message: "Something went wrong!",
+                statusCode: 404
+            }
+        }
+
+        const updateAddress = await addressRepository.updateAddressById(addressId, body)
+        return {
+            requestTime: dateTime.getCurrentDateTime(),
+            status: "Update address successfully!",
+            statusCode: 200,
+            data: updateAddress
+        }
+        
+    } catch (error) {
+        console.log("Error:", error)
+        throw error
+    }
+}
+
+async function deleteAddressByid(addressId){
+    try {
+        const address = getAddressByAddressId(addressId)
+
+        if (!address) {
+            return {
+                dateTime: dateTime.getCurrentDateTime,
+                message: "Something went wrong, Unable to find the Id!",
+                statusCode: 404
+            }
+        }
+
+        const data = await addressRepository.deleteAddressByid(addressId)
+
+        return {
+            requestTime: dateTime.getCurrentDateTime(),
+            status: "Deleted address successfully!",
+            statusCode: 200,
+            data: data
+        }
+
+    } catch (error){
+        console.log("Error:", error)
+        throw error
+    }
+}
+
 module.exports = {
     getListOfAdress,
-    createNewAddress
+    getAddressByAddressId,
+    createNewAddress,
+    updateAddressById,
+    deleteAddressByid
 }
