@@ -47,6 +47,18 @@ async function getUserByEmail(userid) {
     return userObj
 }
 
+async function getUser(userEmail){
+    const uniqueUser = await user.findOne({
+        email: userEmail
+    })
+
+    if (!uniqueUser){
+        return null
+    }
+
+    return uniqueUser
+}
+
 async function getUserById(userId){
     const uniqueUser = await user.findOne({
         _id: userId
@@ -98,6 +110,7 @@ async function deleteUser(userID) {
 module.exports = {
     getAllUsers,
     getUserByEmail,
+    getUser,
     createNewUser,
     updateUserByEmail,
     getUserById,

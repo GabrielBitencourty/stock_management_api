@@ -48,6 +48,32 @@ async function getUserByEmail(userEmail){
     }
 }
 
+async function getUser(userEmail){
+    try {
+        const userId = userEmail
+        const userData = await userRepository.getUser(userId)
+
+        if (!userId || !userData) {
+            return {
+                requestTime: dateTime.getCurrentDateTime(),
+                status: 'User not found in our Database!',
+                statusCode: 404,
+                version: '1.0.0',
+            }
+        }
+
+        return {
+            requestTime: dateTime.getCurrentDateTime(),
+            status: 'Success: user founded!',
+            version: '1.0.0',
+            userData 
+        }    
+    } catch (error) {
+        console.log("Error Message: ",  error.message)
+        throw error
+    }
+}
+
 async function createNewUser(body) {
     try {
         const userName = body.userName
@@ -261,6 +287,7 @@ async function getAccessToken(email) {
 module.exports = {
     getAllUsers,
     getUserByEmail,
+    getUser,
     getUserById,
     createNewUser,
     updateUserByEmail,
