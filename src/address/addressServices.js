@@ -18,7 +18,8 @@ async function getListOfAdress() {
         return {
             dateTime: dateTime.getCurrentDateTime,
             message: "Data successfully recovered!",
-            data: address
+            data: address,
+            count: address.length
         }
 
     } catch (error) {
