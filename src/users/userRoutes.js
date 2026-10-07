@@ -5,6 +5,7 @@ const tokenVerification = require('../midleware/tokenVerification.js')
 
 user.get('/', tokenVerification, userController.getAllUsers)
 user.get('/:userEmail', tokenVerification, userController.getUserByEmail)
+user.get('/getUserById/:userId', tokenVerification, userController.getUserById)
 user.get('/:email/gettoken', userController.getTokenForUser)
 user.get('/:email/getAccessToken', userController.getAccessToken)
 user.post('/', tokenVerification, userController.createNewUser)

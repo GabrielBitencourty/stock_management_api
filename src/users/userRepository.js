@@ -47,9 +47,9 @@ async function getUserByEmail(userid) {
     return userObj
 }
 
-async function getUser(userEmail){
+async function getUserById(userId){
     const uniqueUser = await user.findOne({
-        email: userEmail
+        _id: userId
     })
 
     if (!uniqueUser){
@@ -100,6 +100,6 @@ module.exports = {
     getUserByEmail,
     createNewUser,
     updateUserByEmail,
-    getUser,
+    getUserById,
     deleteUser
 };
