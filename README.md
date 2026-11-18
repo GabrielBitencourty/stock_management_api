@@ -143,7 +143,7 @@ The API uses **bcrypt** to securely hash and validate user passwords.
 
 | Method   | Endpoint            | Description              |
 | -------- | ------------------- | ------------------------ |
-| `POST`   | `/users/createUser` | Create a new user        |
+| `POST`   | `/users`            | Create a new user        |
 | `GET`    | `/users`            | Retrieve users           |
 | `GET`    | `/users/:id`        | Retrieve a specific user |
 | `PUT`    | `/users/:id`        | Update a user            |
@@ -164,8 +164,24 @@ Content-Type: application/json
 
 ```json
 {
-  "email": "user@email.com",
+  "userEmail": "user@email.com",
   "password": "your-password"
+}
+```
+
+### Sign Up
+
+```http
+POST /authentication/signup
+Content-Type: application/json
+```
+
+```json
+{
+  "userEmail": "user@email.com",
+  "userName": "Example User",
+  "password": "your-password",
+  "confirmPassword": "your-password"
 }
 ```
 
@@ -190,9 +206,13 @@ Example:
 
 ```env
 MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>/<database>
+PORT=8080
+JWT_SECRET=<secret>
 ```
 
 Sensitive credentials should never be committed to the repository.
+
+Run the integration tests with `npm test`.
 
 ---
 

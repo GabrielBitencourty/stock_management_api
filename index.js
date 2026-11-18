@@ -1,29 +1,46 @@
-const express = require('express');
-const app = express();
-const port = 8080
-const cors = require("cors")
 require("dotenv").config();
 
+const mongoose = require('mongoose')
+const app = require('./src/app.js')
 const databaseConnection = require('./src/data/mongodb.js')
-const users = require('./src/users/userRoutes.js')
-const auth = require('./src/authentication/authRoutes.js')
-const products = require('./src/products/productsRoutes.js')
-const clients = require('./src/clients/clientsRouter.js');
-const address = require('./src/address/addressRouter.js');
 
-app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true
-}));
+async function startServer() {
+    await databaseConnection()
 
-app.use(express.json());
-app.use('/users', users);
-app.use('/authentication', auth)
-app.use('/products', products)
-app.use('/clients', clients)
-app.use('/address', address)
-databaseConnection()
+    const port = process.env.PORT || 8080
+    const server = app.listen(port, () => {
+        console.log(`Server running on port ${port}`)
+    })
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+    let shuttingDown = false
+    const shutdown = (signal) => {
+        if (shuttingDown) {
+            return
+        }
+
+        shuttingDown = true
+        console.log(`${signal} received; shutting down gracefully`)
+        server.close(async (error) => {
+            if (error) {
+                console.error('Error closing HTTP server:', error)
+                process.exitCode = 1
+            }
+
+            try {
+                await mongoose.connection.close()
+                console.log('MongoDB connection closed')
+            } catch (closeError) {
+                console.error('Error closing MongoDB connection:', closeError)
+                process.exitCode = 1
+            }
+        })
+    }
+
+    process.on('SIGINT', () => shutdown('SIGINT'))
+    process.on('SIGTERM', () => shutdown('SIGTERM'))
+}
+
+startServer().catch((error) => {
+    console.error('Failed to start server:', error)
+    process.exitCode = 1
 })
